@@ -8,7 +8,7 @@
 
 
 # EnKF update function with Vecchia covariance approximation
-vec.update = function(x.mult.prior, y.mult.i, H.mat, tau.mat, S, eps = 1e-03, NN = 20, m = NULL){
+vec.update = function(x.mult.prior, y.mult.i, H.mat, tau.mat, S, eps = 1e-03, NN = 30, m = NULL){
   # Vecchia Prior EnKF update
   ## set up priors from Brian's code
   ## Get the number of rows in our x.mult.prior
@@ -39,7 +39,7 @@ vec.update = function(x.mult.prior, y.mult.i, H.mat, tau.mat, S, eps = 1e-03, NN
   alpha = thetps[[1]]
   beta = thetps[[2]]
   gamma = thetps[[3]]
-  m = ncol(gamma)
+  m = min(ncol(gamma), ncol(NNarray))
   
   ## Generate posterior values from sourced Brian's code
   # This sourced function generates the posterior parameters
