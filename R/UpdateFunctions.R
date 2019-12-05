@@ -39,37 +39,10 @@ chol.update=function(x.mult.prior,y.mult.i,chol.mat, H.mat, tau.mat){
   return(x.mult.post.chol)
 }
 
-# # EnKF update with Vecchia
-# vec.update=function(x.mult.prior,y.mult.i,m=1,S){
-#   # Vecchia Prior EnKF update
-#   ## set up priors from Brian's code
-#   n=nrow(x.mult.prior)
-#   
-#   NNarray=find_ordered_nn(S,m)
-#   NNarray=as.matrix(NNarray[,-1])
-#   
-#   initt <- init_txx2(t(x.mult.prior), NNarray)
-#   
-#   thets=optim(c(1,0,-1), loglikeli, initt=initt, NNarray=NNarray, N = N, method="L-BFGS-B",lower=-5, upper=4)$par
-#   thetps=thetas_to_priors(thets,n^2,m)
-#   alpha=thetps[[1]]
-#   beta=thetps[[2]]
-#   gamma=thetps[[3]]
-#   
-#   ## Generate posterior values from sourced Brian's code
-#   # This sourced function generates the posterior parameters
-#   posts=get_posts(t(x.mult.prior),alpha,beta,gamma,NNarray)
-# 
-#   # This function use posterior parameters to sample from posteriors
-#   # Returns an upper triangular matrix
-#   vec.chol.mat=as.matrix(samp_posts(posts, NNarray))
-# 
-#   
-#   temp.vec=vec.chol.mat%*%t(vec.chol.mat)+t(H.mat)%*%tau.mat.inv%*%H.mat
-#   post.vec.mat=chol(temp.vec)
-#   new.sigma.vec=vec.chol.mat%*%t(vec.chol.mat)
-#   temp=new.sigma.vec%*%x.mult.prior+t(H.mat)%*%tau.mat.inv%*%y.mult.i
-#   step.vec=solve(t(post.vec.mat),temp)
-#   x.mult.post.vec=solve(post.vec.mat,step.vec)
-# }
-# 
+# EnKF update with tapered cov matrix
+tap.update = function(x.mult.prior, y.mult.i, sigma.mat, H.mat, tau.mat, taper.radius){
+  taper = Wendland(dist.mat, taper.radius, 1, 1)
+  taper.sigma.mat = sigma.mat * taper
+  
+  simple.update(x.mult.prior, y.mult.i, taper.sigma.mat, H.mat, tau.mat)
+}
