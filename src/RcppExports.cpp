@@ -6,55 +6,86 @@
 
 using namespace Rcpp;
 
-// rcpparma_hello_world
-arma::mat rcpparma_hello_world();
-RcppExport SEXP _VEnKF_rcpparma_hello_world() {
+// mod_cpp
+int mod_cpp(const int& i, const int& n);
+RcppExport SEXP _VEnKF_mod_cpp(SEXP iSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpparma_hello_world());
+    Rcpp::traits::input_parameter< const int& >::type i(iSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(mod_cpp(i, n));
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpparma_outerproduct
-arma::mat rcpparma_outerproduct(const arma::colvec& x);
-RcppExport SEXP _VEnKF_rcpparma_outerproduct(SEXP xSEXP) {
+// Wn_Even_Cpp
+double Wn_Even_Cpp(const arma::colvec& XX, const int& n, const int& k, const int& N);
+RcppExport SEXP _VEnKF_Wn_Even_Cpp(SEXP XXSEXP, SEXP nSEXP, SEXP kSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_outerproduct(x));
+    Rcpp::traits::input_parameter< const arma::colvec& >::type XX(XXSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
+    Rcpp::traits::input_parameter< const int& >::type N(NSEXP);
+    rcpp_result_gen = Rcpp::wrap(Wn_Even_Cpp(XX, n, k, N));
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpparma_innerproduct
-double rcpparma_innerproduct(const arma::colvec& x);
-RcppExport SEXP _VEnKF_rcpparma_innerproduct(SEXP xSEXP) {
+// XX_Kn_Even_Cpp
+double XX_Kn_Even_Cpp(const arma::colvec& XX, const int& n, const int& k, const int& N);
+RcppExport SEXP _VEnKF_XX_Kn_Even_Cpp(SEXP XXSEXP, SEXP nSEXP, SEXP kSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_innerproduct(x));
+    Rcpp::traits::input_parameter< const arma::colvec& >::type XX(XXSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
+    Rcpp::traits::input_parameter< const int& >::type N(NSEXP);
+    rcpp_result_gen = Rcpp::wrap(XX_Kn_Even_Cpp(XX, n, k, N));
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpparma_bothproducts
-Rcpp::List rcpparma_bothproducts(const arma::colvec& x);
-RcppExport SEXP _VEnKF_rcpparma_bothproducts(SEXP xSEXP) {
+// Lorenz04M2Cpp
+arma::colvec Lorenz04M2Cpp(const arma::colvec& X0, const int& F_Lor, const int& K_Lor, const double& dt, const int& M, const int& N_Lor);
+RcppExport SEXP _VEnKF_Lorenz04M2Cpp(SEXP X0SEXP, SEXP F_LorSEXP, SEXP K_LorSEXP, SEXP dtSEXP, SEXP MSEXP, SEXP N_LorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_bothproducts(x));
+    Rcpp::traits::input_parameter< const arma::colvec& >::type X0(X0SEXP);
+    Rcpp::traits::input_parameter< const int& >::type F_Lor(F_LorSEXP);
+    Rcpp::traits::input_parameter< const int& >::type K_Lor(K_LorSEXP);
+    Rcpp::traits::input_parameter< const double& >::type dt(dtSEXP);
+    Rcpp::traits::input_parameter< const int& >::type M(MSEXP);
+    Rcpp::traits::input_parameter< const int& >::type N_Lor(N_LorSEXP);
+    rcpp_result_gen = Rcpp::wrap(Lorenz04M2Cpp(X0, F_Lor, K_Lor, dt, M, N_Lor));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Lorenz04M2SimCpp
+arma::mat Lorenz04M2SimCpp(const arma::colvec& Xinit, const int& F_Lor, const int& K_Lor, const double& dt, const int& M, const int& iter, const int& burn);
+RcppExport SEXP _VEnKF_Lorenz04M2SimCpp(SEXP XinitSEXP, SEXP F_LorSEXP, SEXP K_LorSEXP, SEXP dtSEXP, SEXP MSEXP, SEXP iterSEXP, SEXP burnSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::colvec& >::type Xinit(XinitSEXP);
+    Rcpp::traits::input_parameter< const int& >::type F_Lor(F_LorSEXP);
+    Rcpp::traits::input_parameter< const int& >::type K_Lor(K_LorSEXP);
+    Rcpp::traits::input_parameter< const double& >::type dt(dtSEXP);
+    Rcpp::traits::input_parameter< const int& >::type M(MSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iter(iterSEXP);
+    Rcpp::traits::input_parameter< const int& >::type burn(burnSEXP);
+    rcpp_result_gen = Rcpp::wrap(Lorenz04M2SimCpp(Xinit, F_Lor, K_Lor, dt, M, iter, burn));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_VEnKF_rcpparma_hello_world", (DL_FUNC) &_VEnKF_rcpparma_hello_world, 0},
-    {"_VEnKF_rcpparma_outerproduct", (DL_FUNC) &_VEnKF_rcpparma_outerproduct, 1},
-    {"_VEnKF_rcpparma_innerproduct", (DL_FUNC) &_VEnKF_rcpparma_innerproduct, 1},
-    {"_VEnKF_rcpparma_bothproducts", (DL_FUNC) &_VEnKF_rcpparma_bothproducts, 1},
+    {"_VEnKF_mod_cpp", (DL_FUNC) &_VEnKF_mod_cpp, 2},
+    {"_VEnKF_Wn_Even_Cpp", (DL_FUNC) &_VEnKF_Wn_Even_Cpp, 4},
+    {"_VEnKF_XX_Kn_Even_Cpp", (DL_FUNC) &_VEnKF_XX_Kn_Even_Cpp, 4},
+    {"_VEnKF_Lorenz04M2Cpp", (DL_FUNC) &_VEnKF_Lorenz04M2Cpp, 6},
+    {"_VEnKF_Lorenz04M2SimCpp", (DL_FUNC) &_VEnKF_Lorenz04M2SimCpp, 7},
     {NULL, NULL, 0}
 };
 
