@@ -3,9 +3,7 @@ Type: Package
 Title: Ensemble Kalman Filter update step with Vecchia Covariance Regularization
 Version: 0.9.1
 Date: 2019-11-20
-Author: c(person("Will", "Boyles", role = c("aut", "cre")), person(Matthias Katzfuss, role = "aut"), 
-person("Brian", "Kidd", role = "ctb"))
-Maintainer: Will Boyles <will at stat.tamu.edu>
+Authors@R: c(person("Will", "Boyles", email = "will@stat.tamu.edu", role = c("aut", "cre")), person("Matthias", "Katzfuss", role = "aut"), person("Brian", "Kidd", role = "ctb"))
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
 Imports: Rcpp (>= 1.0.1), fields, MASS, GpGp, Matrix
