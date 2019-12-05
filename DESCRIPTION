@@ -1,15 +1,17 @@
 Package: VEnKF
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Ensemble Kalman Filter update step with Vecchia Covariance Regularization
+Version: 0.9.1
 Date: 2019-11-20
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
+Author: c(person("Will", "Boyles", role = c("aut", "cre")), person(Matthias Katzfuss, role = "aut"), 
+person("Brian", "Kidd", role = "ctb"))
+Maintainer: Will Boyles <will at stat.tamu.edu>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
-Imports: Rcpp (>= 1.0.1)
+Imports: Rcpp (>= 1.0.1), fields, MASS, GpGp, Matrix
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+RoxygenNote: 6.1.1
