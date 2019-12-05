@@ -1,0 +1,73 @@
+---
+title: "VEnKF"
+author: "Will Boyles"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: vignette
+    toc: true
+    
+bibliography: mendeley.bib
+vignette: >
+  %\VignetteIndexEntry{VEnKF}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  tidy='formatR', tidy.opts=list(width.cutoff = 70)
+)
+```
+
+## Installation
+
+```{r eval = F}
+devtools::install_github("wboyles/VEnKF")
+library(VEnKF)
+```
+
+```{r, echo = F}
+library(VEnKF)
+```
+
+## Brief Description
+
+This package is built to provide functionality to the method described in my forthcoming paper with Dr. Matthias Katzfuss. The main purpose of the package is the function vec.update, which calculates the update step in an Ensemble Kalman Filter using Vecchia approximation to regularize the covariance estimation.
+
+Another purpose of this package is the other update functions for Ensemble Kalman Filters. These are functions that provide basic update steps to implement with other regularization methods for comparison against our method as well as new methods in the future.
+
+The final purpose of this package is the implementation of a Lorenz chaos model for testing methods of data assimilation. The model is described in @Lorenz2005 as Model II.
+
+### EnKF Updates
+
+The Ensemble Kalman Filter is common algorithm utilized in large data assimilation applications based upon the state-space model where we have a sample from a distribution $\hat{\mathbf{x}}_{t-1}^{(1)},\dots,\hat{\mathbf{x}}_{t-1}^{(N)}$. The state-space model is typically broken up into two steps: an Observation Model and an Evolution Model. 
+
+$$ \mathbf{y}_t = \mathbf{H}_t\mathbf{x}_t+\mathbf{v}_t, \ \ \ \mathbf{v}_t \sim
+N_{m_t}(0,\mathbf{R}_t) $$
+
+$$ \mathbf{x}_t = \mathbf{M}_t\mathbf{x}_{t-1}+\mathbf{w}_t, \ \ \ \mathbf{w}_t \sim N_{n}(0,\mathbf{Q}_t) $$
+
+This model can also be thought of as a forecast step and an update step. In most applications, the forecast step is considered a "black box" algorithm for some process, so we do not have knowledge of the internal mechanism and cannot with consistency improve upon the class of Ensemble Kalman Filters by working on these "black box" forecast steps. Instead we focus upon the update step:
+
+$$ \mathbf{x}_i^{*} = g(\mathbf{x}_i|\Sigma)=\Sigma^{*}(\Sigma^{-1}\mathbf{x}_i +\mathbf{H}'\mathbf{R}^{-1}\mathbf{y}_i) $$
+
+where 
+
+$$\Sigma^{*}=(\Sigma^{-1}+\mathbf{H}'\mathbf{R}^{-1}\mathbf{H})^{-1}$$
+
+This provides the framework for various regularized update steps including tapering and localization on the estimated covariance matrix. It is also possible, but not recommended for large datasets, to utilize the unregularized sample covariance matrix.
+
+### Vecchia Update
+
+
+### Lorenz Model
+
+
+## Examples and Simulations
+
+
+## References
+
