@@ -4,7 +4,7 @@ using namespace Rcpp;
 
 
 
-// [[Rcpp::export]]
+
 int mod_cpp(const int& i, const int& n){ 
   int mod = (i - 1) % n;
   if(mod < 0)
@@ -12,7 +12,6 @@ int mod_cpp(const int& i, const int& n){
   return mod;
 }
 
-// [[Rcpp::export]]
 double Wn_Even_Cpp(const arma::colvec& XX, const int& n, const int& k, const int& N)
 {
   double K = k;
@@ -45,7 +44,7 @@ double Wn_Odd_Cpp(const arma::colvec& XX, const int& n, const int& k, const int&
   return(sums);
 }
 
-// [[Rcpp::export]]
+
 double XX_Kn_Even_Cpp(const arma::colvec& XX, const int& n, const int& k, 
                       const int& N)
 {
@@ -88,7 +87,7 @@ double XX_Kn_Odd_Cpp(const arma::colvec& XX, const int& n, const int& k, const i
   
 }
 
-// [[Rcpp::export]]
+
 arma::colvec Lorenz04M2Cpp(const arma::colvec& X0, const int & F_Lor, const int& K_Lor,
                            const double& dt, const int& M, const int& N_Lor)
 {
@@ -135,7 +134,7 @@ arma::colvec Lorenz04M2Cpp(const arma::colvec& X0, const int & F_Lor, const int&
 }
 
 
-// [[Rcpp::export]]
+
 arma::mat Lorenz04M2SimCpp(const arma::colvec& Xinit, const int& F_Lor, const int& K_Lor,
                         const double& dt, const int& M, const int& iter, const int& burn)
 {
