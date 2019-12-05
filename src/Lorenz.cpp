@@ -2,15 +2,7 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 using namespace Rcpp;
 
-// This is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp 
-// function (or via the Source button on the editor toolbar). Learn
-// more about Rcpp at:
-//
-//   http://www.rcpp.org/
-//   http://adv-r.had.co.nz/Rcpp.html
-//   http://gallery.rcpp.org/
-//
+
 
 // [[Rcpp::export]]
 int mod_cpp(const int& i, const int& n){ 
@@ -155,7 +147,9 @@ arma::mat Lorenz04M2SimCpp(const arma::colvec& Xinit, const int& F_Lor, const in
   // Create vector to allow for burn-in iterations
   arma::colvec newXburn = Xinit;
   
-  for(int i = 0; i < burn; ++i){
+  int burnin = burn;
+  
+  for(int i = 0; i < burnin; ++i){
     newXburn = Lorenz04M2Cpp(newXburn, F_Lor, K_Lor, dt, M, N_Lor);
   }
   
