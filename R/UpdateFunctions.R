@@ -1,15 +1,4 @@
-## Functions for update steps
-library(matrixStats)
-library(invgamma)
-library(truncnorm)
-library(MASS)
-library(lattice)
-library(inline)
-library(parallel)
-library(igraph)
-library(reshape2)
-library(Matrix)
-library(adaptMCMC)
+
 
 # Base update function
 g.mult=function(x.samp, y.samp, K){
