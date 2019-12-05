@@ -1,4 +1,8 @@
-# VEnKF
+---
+title: "VEnKF"
+author: "Will Boyles"
+output: github_document
+---
 
 
-This package will be based on my research with Dr. Katzfuss using Vecchia approximation to regularize covariance estimation within an Ensemble Kalman Filter update step. The package will contain hidden functions that perform background Vecchia calculations based upon discussions with Brian Kidd. The main purpose of this package will instead be focused upon the update function based on implementing all of these Vecchia functions to calculate the EnKF update step. The package will also contain several other update functions and simulations to compare these update steps with graphical representations of some simulations. Finally, there will be an implementation of a Lorenz Chaos Model to run numerical simulations of the update functions. The package will also contain a dataset generated from the model in case users will not want to run the model on their own. 
+This package is based on my research project with Dr. Matthias Katzfuss using Vecchia approximation to regularize covariance estimation within an Ensemble Kalman Filter update step. The package will contain hidden functions that perform background Vecchia calculations based upon discussions with Brian Kidd. The main purpose of this package will instead be focused upon the update function based on implementing all of these Vecchia functions to calculate the EnKF update step. The package will also contain several other update functions to compare these update steps with example graphical representations of possible simulations. Finally, there will be an implementation of a Lorenz Chaos Model to run numerical simulations of the update functions. The package will also contain a dataset generated from the model in case users will not want to run the model on their own. 
