@@ -12,7 +12,7 @@ create_data <- function(covar_true, N) {
 get_posts <- function(x, a, b, g, NNarray) {
   n2 <- ncol(x)
   N <- nrow(x)
-  m <- ncol(g)
+  m <- min(ncol(g), ncol(NNarray))
   a_post <- rep(0,n2)
   b_post <- rep(0,n2)
   muhat_post <- matrix(NA,nr=n2,nc=m)
