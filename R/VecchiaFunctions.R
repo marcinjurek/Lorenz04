@@ -1,5 +1,4 @@
-# Rcpp::sourceCpp("U_NZentries.cpp")
-# Rcpp::sourceCpp("MaxMin.cpp")
+
 
 create_data <- function(covar_true, N) {
   
@@ -109,7 +108,7 @@ loglikeli <- function(x, datum, NNarray, eps, m = NULL){
     xi <- -datum[,gind]
     yi <- datum[,i]
     Ginv <- tryCatch({crossprod(xi) + diag(g[i,1:nn]^(-1),nrow=nn)},
-                     error=function(e) {show(dim(crossprod(xi))); show(g[i,1:nn]);show(m);show(nn);show(length(na.omit(NNarray[i,1:m])));show(i);break})
+                     error=function(e) {show(dim(crossprod(xi))); show(g[i,1:nn]);show(m);show(nn);show(length(na.omit(NNarray[i,1:m])));show(i)})
     # Ginv <- crossprod(xi) + diag(g[i,1:nn]^(-1),nrow=nn)
     Ginv_chol <- chol(Ginv)
     #G <- ginv(Ginv)
