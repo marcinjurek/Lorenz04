@@ -22,12 +22,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Installation
 
-```{r eval = F}
-devtools::install_github("wboyles/VEnKF",build_vignettes = T)
-library(VEnKF)
-```
 
 
 ## Brief Description
