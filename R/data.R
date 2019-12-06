@@ -11,45 +11,45 @@
 #'
 "Lorenz480"
 
+#' Example State Ensemble Matrix
 #'
+#' Ensemble state matrix for a 5x5 state-space model with ensemble size N=50 for
+#' examples.
 #'
-#'
-#'
-#'
+#' @format 25x50 matrix
 #'
 "x.mult.prior"
 
+#' Example Observation Ensemble Matrix
 #'
+#' Ensemble observation matrix for a 5x5 state-space model with ensemble size N=50
+#' for examples.
 #'
-#'
-#'
-#'
-#'
+#' @format 25x50 matrix
 #'
 "y.mult.i"
 
+#' Example Observation Matrix
 #'
+#' Observation matrix for a 5x5 state-space model for examples.
 #'
-#'
-#'
-#'
-#'
+#' @format 25x25 matrix
 #'
 "H.mat"
 
+#' Example Observation Noise Matrix
 #'
+#' Observation noise matrix for a 5x5 state-space model for examples.
 #'
-#'
-#'
-#'
-#'
+#' @format 25x25 matrix
 #'
 "tau.mat"
 
+#' Example Spatial Location Matrix
 #'
+#' Spatial locations for a 5x5 state-space model for examples ordered using the 
+#' max-min technique.
 #'
-#'
-#'
-#'
+#' @format 25x2 matrix
 #'
 "S2d.ord"
