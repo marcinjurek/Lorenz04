@@ -1,11 +1,11 @@
 VEnKF Introduction
 ------------------
 
-- [Brief_Description](#Brief_Description)
-  * [EnKF_Updates](#EnKF_Updates)
-  * [VEcchia_Update](#Vecchia_Update)
-  * [Lorenz_Model](#Lorenz_Model)
-- [Examples_and_Simulations](#Examples_and_Simulations)
+- [Brief Description](#Brief_Description)
+  * [EnKF Updates](#EnKF_Updates)
+  * [VEcchia Update](#Vecchia_Update)
+  * [Lorenz Model](#Lorenz_Model)
+- [Examples and Simulations](#Examples_and_Simulations)
 - [References](#References)
 
 
