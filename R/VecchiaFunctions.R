@@ -1,23 +1,26 @@
+# Vecchia subfunctions - NOT EXPORTED
 
 
-create_data <- function(covar_true, N) {
-  
-  #Lazy creation of data
-  datum <- mvrnorm(N, rep(0, nrow(covar_true)), covar_true)
-  return(datum)
-}
-
-
+# Given Data, thetas, Nearest neighbor array, and it returns posterior 
 get_posts <- function(x, a, b, g, NNarray) {
+  # Get dims
   n2 <- ncol(x)
   N <- nrow(x)
   m <- min(ncol(g), ncol(NNarray))
+  
+  # Initialize
   a_post <- rep(0,n2)
   b_post <- rep(0,n2)
   muhat_post <- matrix(NA,nr=n2,nc=m)
   G_post <- array(NA, dim=c(m,m,n2))
+  
+  # Calc a_post
   a_post <- a + N/2
+  
+  # First b_post
   b_post[1] <- b[1] + t(x[,1]%*%x[,1])/2
+  
+  # Loop to calc Gamma post and b_post
   for(i in 2:n2){
     gind <- na.omit(NNarray[i,1:m])
     nn <- length(gind)
@@ -40,23 +43,34 @@ get_posts <- function(x, a, b, g, NNarray) {
   return(list(a_post,b_post,muhat_post,G_post))
 }
 
+
+# Given posteriors, nearest neighbor info and returns samples from posteriors
 samp_posts <- function(posts, NNarray, m = m) {
+  # Get dims
   n2 <- nrow(NNarray)
+  
+  # Calculate d
   d <- (1/sqrt(posts[[2]][1]))*exp(lgamma((2*posts[[1]][1]+1)/2) - lgamma(posts[[1]][1]))
+  
+  # Initialize uhat
   uhat <- sparseMatrix(i=1,j=1,x=d, dims=c(n2,n2),triangular=TRUE)
+  
+  # Loop to calculate uhat
   for(i in 2:n2) {
     gind <- na.omit(NNarray[i, 1:m])
+    
     nn <- length(gind)
-    #d <- rinvgamma(mcl, posts[[1]][i], posts[[2]][i])
+
     uhat[i,i] <- (1/sqrt(posts[[2]][i]))*exp(lgamma((2*posts[[1]][i]+1)/2) - lgamma(posts[[1]][i]))
-    #uhat[i,i] <- mean(1/sqrt(d))
+
     uhat[gind,i] <- posts[[3]][i,1:nn]*uhat[i, i]
   }
   return(uhat)
 }
 
+# Gets
 orderMaxMinFast <- function( locs, numpropose ){
-  
+  # Get dims
   n <- nrow(locs)
   d <- ncol(locs)
   remaininginds <- 1:n
