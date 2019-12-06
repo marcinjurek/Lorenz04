@@ -28,13 +28,12 @@ get_posts <- function(x, a, b, g, NNarray) {
     yi <- x[,i]
     Ginv <- t(xi)%*%xi + diag(g[i,1:nn]^(-1), nrow = nn)
     Ginv_chol <- chol(Ginv)
-    #G <- ginv(Ginv)
-    #muhat <- G%*%t(xi)%*%yi
+
     muhat <- tryCatch({solve(Ginv_chol, solve(t(Ginv_chol),crossprod(xi,yi)))},
                       error=function(e) {
                         ginv(Ginv)%*%crossprod(xi,yi)
                       })
-    #G_post[1:nn,1:nn,i] <- G
+
     muhat_post[i,1:nn] <- muhat
     G_post[1:nn,1:nn,i] <- Ginv_chol
     muhat_post[i,1:nn] <- muhat
