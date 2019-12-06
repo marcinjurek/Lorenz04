@@ -2,8 +2,7 @@
 
 
 ###########################################################
-##   This file contains only the Vecchia Update function ##
-## and all of its necessary subfunctions. 
+##  This file contains only the Vecchia Update function  ##
 ###########################################################
 
 
