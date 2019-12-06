@@ -69,19 +69,7 @@ samp_posts <- function(posts, NNarray, m = m) {
 }
 
 
-
-init_txx2 <- function(data, NNarray) {
-  txx_txy_tyy <- list()
-  txx_txy_tyy[[1]] <- list(NA,NA,crossprod(data[,1]))
-  for(z in 2:nrow(NNarray)){
-    gind <- na.omit(NNarray[z,])
-    txx <- crossprod(-data[,gind])
-    txy <- crossprod(-data[,gind],data[,z])
-    txx_txy_tyy[[z]] <- list(txx,txy,crossprod(data[,z]))
-  }
-  return(txx_txy_tyy)
-}
-
+# Function to return loglikelihood of thetas
 loglikeli <- function(x, datum, NNarray, eps, m = NULL){
   n2 <- nrow(NNarray)
   ap <- 6 + N / 2
@@ -95,21 +83,17 @@ loglikeli <- function(x, datum, NNarray, eps, m = NULL){
   for(i in 2:n2) {
     gind <- na.omit(NNarray[i,1:m])
     nn <- length(gind)
-    # browser()
     xi <- -datum[,gind]
     yi <- datum[,i]
     Ginv <- tryCatch({crossprod(xi) + diag(g[i,1:nn]^(-1),nrow=nn)},
                      error=function(e) {show(dim(crossprod(xi))); show(g[i,1:nn]);show(m);show(nn);show(length(na.omit(NNarray[i,1:m])));show(i)})
-    # Ginv <- crossprod(xi) + diag(g[i,1:nn]^(-1),nrow=nn)
     Ginv_chol <- chol(Ginv)
-    #G <- ginv(Ginv)
-    #muhat <- G%*%t(xi)%*%yi
-    #muhat <- solve(Ginv_chol, solve(t(Ginv_chol),initt[[i]][[2]]))
+
     muhat <- tryCatch({solve(Ginv_chol, solve(t(Ginv_chol),crossprod(xi,yi)))},
                       error=function(e) {
                         ginv(Ginv)%*%crossprod(xi,yi)
                       })
-    #G_post[1:nn,1:nn,i] <- G
+
     b_post <- b[i] + (crossprod(yi) - t(muhat)%*%Ginv %*% muhat)/2
     ldet <- -0.5*(2*sum(log(na.omit(diag(Ginv_chol)))) + (sum(log(g[i,1:nn]))))
     lb <- 6*log(b[i]) - ap*log(b_post)
@@ -118,7 +102,7 @@ loglikeli <- function(x, datum, NNarray, eps, m = NULL){
   return(c(-sums))
 }
 
-
+# Function to turn our theta values into hyperpriors
 thetas_to_priors <- function(thetas, n2, eps, m = NULL) {
   b <- 5 * exp(thetas[[1]])*(1 - exp(-exp(thetas[[2]])/sqrt(0:(n2 - 1))))
   a <- rep(6, n2)
