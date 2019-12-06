@@ -104,13 +104,22 @@ loglikeli <- function(x, datum, NNarray, eps, m = NULL){
 
 # Function to turn our theta values into hyperpriors
 thetas_to_priors <- function(thetas, n2, eps, m = NULL) {
+  # Calculate beta
   b <- 5 * exp(thetas[[1]])*(1 - exp(-exp(thetas[[2]])/sqrt(0:(n2 - 1))))
+  # Calculate alpha
   a <- rep(6, n2)
+  
+  # Prep theta 3
   theta_3 <- exp(-exp(thetas[[3]]) * (1:30))
+  
+  # Determine m if needed
   if(is.null(m)){
     m <- which(theta_3 < eps)[1] - 1
   }
+  # m cannot be less than 2
   if(is.na(m) | m < 2){m <- 2}
+  
+  # Calculate gamma
   g <- matrix(theta_3[1:m], nc = m, nr = n2, byrow = T)
   g <- g / (b / (a - 1))
   return(list(a, b, g))
