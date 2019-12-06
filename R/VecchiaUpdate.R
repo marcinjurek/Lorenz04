@@ -65,9 +65,6 @@ vec.update = function(x.mult.prior, y.mult.i, H.mat, tau.mat, S, eps = 1e-03, NN
   NNarray = find_ordered_nn(S, min(NN, m))
   NNarray = as.matrix(NNarray[, -1])
   
-  # Use the data and nearest neighbor info to get initial values for theta 
-  # log-likelihood optimization
-  # initt = init_txx2(t(x.mult.prior), NNarray)
   
   # Get maximum a posteriori values for theta
   thets = optim(c(1,0,-1), loglikeli, datum = t(x.mult.prior), NNarray = NNarray, 
