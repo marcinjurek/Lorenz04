@@ -7,7 +7,47 @@
 ###########################################################
 
 
-# EnKF update function with Vecchia covariance approximation
+
+#' EnKF update function with Vecchia covariance approximation
+#' 
+#' Given an observation vector and an ensemble of state vectors, this function returns 
+#' an updated ensemble of state vectors and the number of nearest neighbors used to
+#' determine the update.
+#' 
+#'
+#' @param x.mult.prior Ensemble of state data vectors at time t-1 to update
+#' @param y.mult.i Ensemble of observation data at time t
+#' @param H.mat The observation matrix relating $x_t$ to $y_t$
+#' @param tau.mat The observation noise matrix
+#' @param S The matrix of spatial locations in Max-min ordering
+#' @param eps The threshold for selecting m based upon our hyperpriors. The default value 
+#' is 0.001, and we do not recommend a value larger than 0.5 or smaller than 0.000001.
+#' @param NN The maximum size wanted for creating a Nearest Neighbors array. This will 
+#' put an upper limit on the number of possible neighbors the method will consider. 
+#' The default value is 30.
+#' @param m The number of neighbors to consider in the regression models for calculating
+#' the modified Cholesky decomposition of the Covariance matrix. If left \code{NULL},
+#' the method will select m as described above under the threshold \code{eps}. The default
+#' value is set to \code{NULL}.
+#'
+#' @return A list of returned objects
+#' \itemize{
+#' \item{update}{The updated ensemble of state vectors}
+#' \item{m}{The number of nearest neighbors used to determine the update}
+#' }
+#' @export
+#'
+#' @examples
+#' data(x.mult.prior)
+#' data(y.mult.i)
+#' data(H.mat)
+#' data(tau.mat)
+#' data(S2d.ord)
+#' 
+#' vec.update(x.mult.prior, y.mult.i, H.mat, tau.mat, S2d.ord)
+#' # Choose the m you want
+#' vec.update(x.mult.prior, y.mult.i, H.mat, tau.mat, S2d.ord, m = 20)
+#' 
 vec.update = function(x.mult.prior, y.mult.i, H.mat, tau.mat, S, eps = 1e-03, NN = 30, m = NULL){
   # Vecchia Prior EnKF update
   ## set up priors from Brian's code
@@ -39,6 +79,8 @@ vec.update = function(x.mult.prior, y.mult.i, H.mat, tau.mat, S, eps = 1e-03, NN
   alpha = thetps[[1]]
   beta = thetps[[2]]
   gamma = thetps[[3]]
+  
+  # Make sure m remains under the user allowed limit
   m = min(ncol(gamma), ncol(NNarray))
   
   ## Generate posterior values from sourced Brian's code
@@ -49,7 +91,6 @@ vec.update = function(x.mult.prior, y.mult.i, H.mat, tau.mat, S, eps = 1e-03, NN
   # Returns an upper triangular matrix
   vec.chol.mat = as.matrix(samp_posts(posts, NNarray, m))
   
-  # Use chol.update function to generate our update?
   
   ## Calculate update using formula described in paper
   # Calculate new sigma and t(H.mat)%*%tau.mat.inv using crossprod because they 
