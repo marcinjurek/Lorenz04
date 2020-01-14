@@ -1,8 +1,0 @@
-useDynLib(VEnKF, .registration=TRUE)
-importFrom(Rcpp, evalCpp)
-export(vec.update)
-export(simple.update)
-export(chol.update)
-export(tap.update)
-export(Lorenz04M2)
-export(Lorenz04M2Sim)
