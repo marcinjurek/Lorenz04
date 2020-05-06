@@ -4,7 +4,7 @@
 \alias{Lorenz04M2SimCpp}
 \title{Simulate from the Lorenz 04 model}
 \usage{
-Lorenz04M2SimCpp(Xinit, F_Lor, K_Lor, dt, M, iter, burn, order)
+Lorenz04M2SimCpp(Xinit, F_Lor, K_Lor, dt, M, iter, burn, newAlgo)
 }
 \arguments{
 \item{Xinit}{initial state}

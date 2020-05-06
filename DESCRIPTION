@@ -14,6 +14,7 @@ Description: The main purpose of this package will instead be focused upon the
 License: GPL-2
 Imports: Rcpp (>= 1.0.1), fields, MASS, GpGp, Matrix
 LinkingTo: Rcpp, RcppArmadillo
-Suggests: knitr, rmarkdown
+Suggests: knitr, rmarkdown, testthat
 VignetteBuilder: knitr
+Encoding: UTF-8
 RoxygenNote: 6.1.1
