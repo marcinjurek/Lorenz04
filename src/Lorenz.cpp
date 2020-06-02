@@ -140,6 +140,11 @@ arma::mat EGradient(const arma::vec& X, const int& K, const double& dt, const do
 arma::mat exactGradient(const arma::vec& X, const int& K, const int& M, const double& dt, const double& F){
 
   int N = X.n_rows;
+  
+  if(K>=(N/2)){
+    stop("K is too big for this N.");
+  }
+  
   arma::mat G = arma::eye(N, N);
   arma::vec Xnew = X;
   for( int m=1; m<=M; m++){
