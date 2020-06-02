@@ -1,5 +1,5 @@
-#include "oldRHS.h"
-#include "newRHStools.h"
+#include "scalarRHS.h"
+#include "vectorRHS.h"
 #include <RcppArmadillo.h>
 #include "exactGrad.h"
 // [[Rcpp::depends(RcppArmadillo)]]
@@ -11,17 +11,17 @@ using namespace Rcpp;
 
 //' A single iteration of the Lorenz 04 model
 //'
-//' @param XX initial state
-//' @param F_Lor F from the Lorenz 04 model
-//' @param K_Lor K from the Lorenz 04 model
+//' @param X0 initial state
+//' @param F F from the Lorenz 04 model
+//' @param K K from the Lorenz 04 model
 //' @param dt time step
 //' @param M the number of steps that make a time step
-//' @param order the order of RK method to use
+//' @param vectorAlgo whether to run the vector version of the algorithm
 //' @return dx the increment to reach the new state
 //' @export
 // [[Rcpp::export]]
 arma::vec DeltaLorenz04M2Cpp(const arma::vec X0, const double & F, const int& K,
-                             const double& dt, const int& M, const bool& newAlgo){
+                             const double& dt, const int& M, const bool& vectorAlgo){
   
   // Initialize vector of zeros that will "update" XX
   arma::vec X = X0;
@@ -32,12 +32,12 @@ arma::vec DeltaLorenz04M2Cpp(const arma::vec X0, const double & F, const int& K,
   // Nested for loops to update XX
   for(int i = 0; i < M ; ++i){
 
-    if(newAlgo){
+    if(vectorAlgo){
       
-      arma::vec k1 = RHS(X, K, F);
-      arma::vec k2 = RHS(X + 0.5*dt*k1, K, F);
-      arma::vec k3 = RHS(X + 0.5*dt*k2, K, F);
-      arma::vec k4 = RHS(X + dt*k3, K, F);
+      arma::vec k1 = vectorRHS(X, K, F);
+      arma::vec k2 = vectorRHS(X + 0.5*dt*k1, K, F);
+      arma::vec k3 = vectorRHS(X + 0.5*dt*k2, K, F);
+      arma::vec k4 = vectorRHS(X + dt*k3, K, F);
       
       dx = (k1 + 2*k2 + 2*k3 + k4) * dt/6;
       
@@ -46,10 +46,10 @@ arma::vec DeltaLorenz04M2Cpp(const arma::vec X0, const double & F, const int& K,
       dx = arma::zeros<arma::vec>(N_Lor);
       for(int j = 0; j < N_Lor; ++j){
       
-	      double k1 = oldRHS(X, j, K, F);
-	      double k2 = oldRHS(X + 0.5*dt*k1, j, K, F);
-	      double k3 = oldRHS(X + 0.5*dt*k2, j, K, F);
-	      double k4 = oldRHS(X + dt*k3, j, K, F);
+	      double k1 = scalarRHS(X, j, K, F);
+	      double k2 = scalarRHS(X + 0.5*dt*k1, j, K, F);
+	      double k3 = scalarRHS(X + 0.5*dt*k2, j, K, F);
+	      double k4 = scalarRHS(X + dt*k3, j, K, F);
 	      dx(j) =  (k1 + 2*k2 + 2*k3 + k4) * dt/6;
   
       }
@@ -72,12 +72,13 @@ arma::vec DeltaLorenz04M2Cpp(const arma::vec X0, const double & F, const int& K,
 //' @param M the number of steps that make a time step
 //' @param iter number of iterations
 //' @param burn how many steps to discard
+//' @param vectorAlgo whether to run the vector version of the algorithm
 //' @return Xiter values of all iterations
 //' @export
 // [[Rcpp::export]]
 arma::mat Lorenz04M2SimCpp(const arma::vec& Xinit, const int& F_Lor, const int& K_Lor,
                            const double& dt, const int& M, const int& iter, const int& burn,
-			   const bool& newAlgo)
+			   const bool& vectorAlgo)
 {
   // Get N_Lor from Xinit
   int N_Lor = Xinit.n_rows;
@@ -91,7 +92,7 @@ arma::mat Lorenz04M2SimCpp(const arma::vec& Xinit, const int& F_Lor, const int& 
   
   if( burnin > 0 ){
     for(int i = 0; i < burnin; ++i){
-      arma::vec delta = DeltaLorenz04M2Cpp(newXburn, F_Lor, K_Lor, dt, M, newAlgo);
+      arma::vec delta = DeltaLorenz04M2Cpp(newXburn, F_Lor, K_Lor, dt, M, vectorAlgo);
       newXburn = newXburn + delta;
     }
   } 
@@ -99,7 +100,7 @@ arma::mat Lorenz04M2SimCpp(const arma::vec& Xinit, const int& F_Lor, const int& 
   Xiter.col(0) = newXburn;
   
   for(int i = 1; i < iter+1; ++i){
-    arma::vec delta = DeltaLorenz04M2Cpp(Xiter.col(i - 1), F_Lor, K_Lor, dt, M, newAlgo);
+    arma::vec delta = DeltaLorenz04M2Cpp(Xiter.col(i - 1), F_Lor, K_Lor, dt, M, vectorAlgo);
     Xiter.col(i) = Xiter.col(i-1) + delta;
   }
   
@@ -114,9 +115,9 @@ arma::mat EGradient(const arma::vec& X, const int& K, const double& dt, const do
   
   int N = X.n_rows;
   
-  arma::vec Xp = X + 0.5*dt*RHS(X, K, F);
-  arma::vec Xb = X + 0.5*dt*RHS(Xp, K, F);
-  arma::vec Xt = X + dt*RHS(Xb, K, F);
+  arma::vec Xp = X + 0.5*dt*vectorRHS(X, K, F);
+  arma::vec Xb = X + 0.5*dt*vectorRHS(Xp, K, F);
+  arma::vec Xt = X + dt*vectorRHS(Xb, K, F);
   
   arma::mat A = exactGrad(X, K);
   arma::mat B = exactGrad(Xp, K) % (1 + 0.5*dt*A);
@@ -130,11 +131,11 @@ arma::mat EGradient(const arma::vec& X, const int& K, const double& dt, const do
 
 //' Gradient for the Lorenz model
 //'
-//' @param Xinit initial state
-//' @param K_Lor K from the Lorenz 04 model
+//' @param X initial state
+//' @param K K from the Lorenz 04 model
 //' @param M the number of steps that make a time step
 //' @param dt time step
-//' @param F_Lor F from the Lorenz 04 model
+//' @param F F from the Lorenz 04 model
 //' @export
 // [[Rcpp::export]]
 arma::mat exactGradient(const arma::vec& X, const int& K, const int& M, const double& dt, const double& F){

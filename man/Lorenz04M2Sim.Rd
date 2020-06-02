@@ -4,8 +4,7 @@
 \alias{Lorenz04M2Sim}
 \title{Lorenz Model Simulation}
 \usage{
-Lorenz04M2Sim(X0, F_Lor, K_Lor, dt, M, iter = 500, burn = 100,
-  order = 1)
+Lorenz04M2Sim(X0, F_Lor, K_Lor, dt, M, iter = 500, burn = 100)
 }
 \arguments{
 \item{X0}{The vector of points you want to pass through a Lorenz chaos model.}
@@ -23,9 +22,7 @@ value is the length of your data vector divided by 30.}
 The default value is set to 500}
 
 \item{burn}{The amount of burn-in you want to run based on your starting point.
-The default value is set to 100}
-
-\item{order}{The order of the RK solution method to use.
+The default value is set to 100
 The default value is 1}
 }
 \value{
@@ -39,6 +36,6 @@ described as the second model in
 }
 \examples{
 X0 = rnorm(960)
-Lorenz04M2Sim(X0, 10, 32, 0.005, 40)
+Lorenz04M2Sim(X0, 10, 32, 0.005, 40, iter = 10, burn = 1)
 
 }

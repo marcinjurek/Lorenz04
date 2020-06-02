@@ -1,3 +1,4 @@
+Lorenz04.Rcheck/*
 .Rproj.user
 .Rhistory
 .RData
@@ -8,3 +9,4 @@ src/*.dll
 inst/doc
 doc
 Meta
+*.tar.gz

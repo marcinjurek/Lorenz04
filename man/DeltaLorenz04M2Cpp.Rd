@@ -4,20 +4,20 @@
 \alias{DeltaLorenz04M2Cpp}
 \title{A single iteration of the Lorenz 04 model}
 \usage{
-DeltaLorenz04M2Cpp(X0, F, K, dt, M, newAlgo)
+DeltaLorenz04M2Cpp(X0, F, K, dt, M, vectorAlgo)
 }
 \arguments{
+\item{X0}{initial state}
+
+\item{F}{F from the Lorenz 04 model}
+
+\item{K}{K from the Lorenz 04 model}
+
 \item{dt}{time step}
 
 \item{M}{the number of steps that make a time step}
 
-\item{XX}{initial state}
-
-\item{F_Lor}{F from the Lorenz 04 model}
-
-\item{K_Lor}{K from the Lorenz 04 model}
-
-\item{order}{the order of RK method to use}
+\item{vectorAlgo}{whether to run the vector version of the algorithm}
 }
 \value{
 dx the increment to reach the new state

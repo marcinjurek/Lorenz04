@@ -86,7 +86,7 @@ arma::vec getXX(const arma::vec& X, const int& K, const arma::vec& W){
 //' @param F parameter from the Lorenz 04 model
 //' @export
 // [[Rcpp::export]]
-arma::vec RHS(const arma::vec& X, const int& K, const double& F){
+arma::vec vectorRHS(const arma::vec& X, const int& K, const double& F){
   
   arma::vec W = getW(X, K);
   arma::vec XXnew = getXX(X, K, W);

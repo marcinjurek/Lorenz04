@@ -3,16 +3,16 @@
 
 #' A single iteration of the Lorenz 04 model
 #'
-#' @param XX initial state
-#' @param F_Lor F from the Lorenz 04 model
-#' @param K_Lor K from the Lorenz 04 model
+#' @param X0 initial state
+#' @param F F from the Lorenz 04 model
+#' @param K K from the Lorenz 04 model
 #' @param dt time step
 #' @param M the number of steps that make a time step
-#' @param order the order of RK method to use
+#' @param vectorAlgo whether to run the vector version of the algorithm
 #' @return dx the increment to reach the new state
 #' @export
-DeltaLorenz04M2Cpp <- function(X0, F, K, dt, M, newAlgo) {
-    .Call('_VEnKF_DeltaLorenz04M2Cpp', PACKAGE = 'VEnKF', X0, F, K, dt, M, newAlgo)
+DeltaLorenz04M2Cpp <- function(X0, F, K, dt, M, vectorAlgo) {
+    .Call('_Lorenz04_DeltaLorenz04M2Cpp', PACKAGE = 'Lorenz04', X0, F, K, dt, M, vectorAlgo)
 }
 
 #' Simulate from the Lorenz 04 model
@@ -24,22 +24,23 @@ DeltaLorenz04M2Cpp <- function(X0, F, K, dt, M, newAlgo) {
 #' @param M the number of steps that make a time step
 #' @param iter number of iterations
 #' @param burn how many steps to discard
+#' @param vectorAlgo whether to run the vector version of the algorithm
 #' @return Xiter values of all iterations
 #' @export
-Lorenz04M2SimCpp <- function(Xinit, F_Lor, K_Lor, dt, M, iter, burn, newAlgo) {
-    .Call('_VEnKF_Lorenz04M2SimCpp', PACKAGE = 'VEnKF', Xinit, F_Lor, K_Lor, dt, M, iter, burn, newAlgo)
+Lorenz04M2SimCpp <- function(Xinit, F_Lor, K_Lor, dt, M, iter, burn, vectorAlgo) {
+    .Call('_Lorenz04_Lorenz04M2SimCpp', PACKAGE = 'Lorenz04', Xinit, F_Lor, K_Lor, dt, M, iter, burn, vectorAlgo)
 }
 
 #' Gradient for the Lorenz model
 #'
-#' @param Xinit initial state
-#' @param K_Lor K from the Lorenz 04 model
+#' @param X initial state
+#' @param K K from the Lorenz 04 model
 #' @param M the number of steps that make a time step
 #' @param dt time step
-#' @param F_Lor F from the Lorenz 04 model
+#' @param F F from the Lorenz 04 model
 #' @export
 exactGradient <- function(X, K, M, dt, F) {
-    .Call('_VEnKF_exactGradient', PACKAGE = 'VEnKF', X, K, M, dt, F)
+    .Call('_Lorenz04_exactGradient', PACKAGE = 'Lorenz04', X, K, M, dt, F)
 }
 
 #' Calculate the exact gradient in the Lorenz model
@@ -49,7 +50,7 @@ exactGradient <- function(X, K, M, dt, F) {
 #' @return grad the matrix with the gradient
 #' @export
 exactGrad <- function(X, K) {
-    .Call('_VEnKF_exactGrad', PACKAGE = 'VEnKF', X, K)
+    .Call('_Lorenz04_exactGrad', PACKAGE = 'Lorenz04', X, K)
 }
 
 #' right hand side of the Lorenz model in vector form
@@ -58,7 +59,7 @@ exactGrad <- function(X, K) {
 #' @param K parameter from the Lorenz 04 model
 #' @param F parameter from the Lorenz 04 model
 #' @export
-RHS <- function(X, K, F) {
-    .Call('_VEnKF_RHS', PACKAGE = 'VEnKF', X, K, F)
+vectorRHS <- function(X, K, F) {
+    .Call('_Lorenz04_vectorRHS', PACKAGE = 'Lorenz04', X, K, F)
 }
 

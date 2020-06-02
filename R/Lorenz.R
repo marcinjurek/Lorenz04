@@ -13,7 +13,6 @@
 #' value is the length of your data vector divided by 30.
 #' @param dt The internal step size. The default value is set to 0.005 
 #' @param M The number of internal steps. The default value is set to 40
-#' @param order The order of the RK solution method to use.
 #' The default value is 1
 #'
 #' @return The function returns a new vector that represents a single step in a Lorenz chaos
@@ -24,12 +23,12 @@
 #' X0 = rnorm(960)
 #' Lorenz04M2(X0, 10, 32, 0.005, 40)
 #' 
-Lorenz04M2 = function(X0, F_Lor, K_Lor, dt = 0.005, M = 40, order = 1){
+Lorenz04M2 = function(X0, F_Lor, K_Lor, dt = 0.005, M = 40){
   N_Lor = length(X0)
   
   if(!is.vector(X0)){ stop("X0 should be a vector")}
   
-  Xout = X0 + DeltaLorenz04M2Cpp(X0, F_Lor, K_Lor, dt, M, N_Lor, order)
+  Xout = X0 + DeltaLorenz04M2Cpp(X0, F_Lor, K_Lor, dt, M, FALSE)
   return(Xout)
 }
 
@@ -52,7 +51,6 @@ Lorenz04M2 = function(X0, F_Lor, K_Lor, dt = 0.005, M = 40, order = 1){
 #' The default value is set to 500
 #' @param burn The amount of burn-in you want to run based on your starting point.
 #' The default value is set to 100
-#' @param order The order of the RK solution method to use.
 #' The default value is 1
 #'
 #' @return This function returns a matrix containg iter serial simulations of 
@@ -61,14 +59,14 @@ Lorenz04M2 = function(X0, F_Lor, K_Lor, dt = 0.005, M = 40, order = 1){
 #'
 #' @examples
 #' X0 = rnorm(960)
-#' Lorenz04M2Sim(X0, 10, 32, 0.005, 40)
+#' Lorenz04M2Sim(X0, 10, 32, 0.005, 40, iter = 10, burn = 1)
 #' 
-Lorenz04M2Sim = function(X0, F_Lor, K_Lor, dt, M, iter = 500, burn = 100, order = 1){
+Lorenz04M2Sim = function(X0, F_Lor, K_Lor, dt, M, iter = 500, burn = 100){
   N_Lor = length(X0)
   
   if(!is.vector(X0)){ stop("X0 should be a vector")}
   
-  Xout = Lorenz04M2SimCpp(X0, F_Lor, K_Lor, dt, M, iter, burn, order)
+  Xout = Lorenz04M2SimCpp(X0, F_Lor, K_Lor, dt, M, iter, burn, FALSE)
   return(Xout)
 }
 

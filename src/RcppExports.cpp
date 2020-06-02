@@ -7,8 +7,8 @@
 using namespace Rcpp;
 
 // DeltaLorenz04M2Cpp
-arma::vec DeltaLorenz04M2Cpp(const arma::vec X0, const double& F, const int& K, const double& dt, const int& M, const bool& newAlgo);
-RcppExport SEXP _VEnKF_DeltaLorenz04M2Cpp(SEXP X0SEXP, SEXP FSEXP, SEXP KSEXP, SEXP dtSEXP, SEXP MSEXP, SEXP newAlgoSEXP) {
+arma::vec DeltaLorenz04M2Cpp(const arma::vec X0, const double& F, const int& K, const double& dt, const int& M, const bool& vectorAlgo);
+RcppExport SEXP _Lorenz04_DeltaLorenz04M2Cpp(SEXP X0SEXP, SEXP FSEXP, SEXP KSEXP, SEXP dtSEXP, SEXP MSEXP, SEXP vectorAlgoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -17,14 +17,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int& >::type K(KSEXP);
     Rcpp::traits::input_parameter< const double& >::type dt(dtSEXP);
     Rcpp::traits::input_parameter< const int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< const bool& >::type newAlgo(newAlgoSEXP);
-    rcpp_result_gen = Rcpp::wrap(DeltaLorenz04M2Cpp(X0, F, K, dt, M, newAlgo));
+    Rcpp::traits::input_parameter< const bool& >::type vectorAlgo(vectorAlgoSEXP);
+    rcpp_result_gen = Rcpp::wrap(DeltaLorenz04M2Cpp(X0, F, K, dt, M, vectorAlgo));
     return rcpp_result_gen;
 END_RCPP
 }
 // Lorenz04M2SimCpp
-arma::mat Lorenz04M2SimCpp(const arma::vec& Xinit, const int& F_Lor, const int& K_Lor, const double& dt, const int& M, const int& iter, const int& burn, const bool& newAlgo);
-RcppExport SEXP _VEnKF_Lorenz04M2SimCpp(SEXP XinitSEXP, SEXP F_LorSEXP, SEXP K_LorSEXP, SEXP dtSEXP, SEXP MSEXP, SEXP iterSEXP, SEXP burnSEXP, SEXP newAlgoSEXP) {
+arma::mat Lorenz04M2SimCpp(const arma::vec& Xinit, const int& F_Lor, const int& K_Lor, const double& dt, const int& M, const int& iter, const int& burn, const bool& vectorAlgo);
+RcppExport SEXP _Lorenz04_Lorenz04M2SimCpp(SEXP XinitSEXP, SEXP F_LorSEXP, SEXP K_LorSEXP, SEXP dtSEXP, SEXP MSEXP, SEXP iterSEXP, SEXP burnSEXP, SEXP vectorAlgoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,14 +35,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int& >::type M(MSEXP);
     Rcpp::traits::input_parameter< const int& >::type iter(iterSEXP);
     Rcpp::traits::input_parameter< const int& >::type burn(burnSEXP);
-    Rcpp::traits::input_parameter< const bool& >::type newAlgo(newAlgoSEXP);
-    rcpp_result_gen = Rcpp::wrap(Lorenz04M2SimCpp(Xinit, F_Lor, K_Lor, dt, M, iter, burn, newAlgo));
+    Rcpp::traits::input_parameter< const bool& >::type vectorAlgo(vectorAlgoSEXP);
+    rcpp_result_gen = Rcpp::wrap(Lorenz04M2SimCpp(Xinit, F_Lor, K_Lor, dt, M, iter, burn, vectorAlgo));
     return rcpp_result_gen;
 END_RCPP
 }
 // exactGradient
 arma::mat exactGradient(const arma::vec& X, const int& K, const int& M, const double& dt, const double& F);
-RcppExport SEXP _VEnKF_exactGradient(SEXP XSEXP, SEXP KSEXP, SEXP MSEXP, SEXP dtSEXP, SEXP FSEXP) {
+RcppExport SEXP _Lorenz04_exactGradient(SEXP XSEXP, SEXP KSEXP, SEXP MSEXP, SEXP dtSEXP, SEXP FSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -57,7 +57,7 @@ END_RCPP
 }
 // exactGrad
 arma::mat exactGrad(const arma::vec& X, const int& K);
-RcppExport SEXP _VEnKF_exactGrad(SEXP XSEXP, SEXP KSEXP) {
+RcppExport SEXP _Lorenz04_exactGrad(SEXP XSEXP, SEXP KSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -67,30 +67,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// RHS
-arma::vec RHS(const arma::vec& X, const int& K, const double& F);
-RcppExport SEXP _VEnKF_RHS(SEXP XSEXP, SEXP KSEXP, SEXP FSEXP) {
+// vectorRHS
+arma::vec vectorRHS(const arma::vec& X, const int& K, const double& F);
+RcppExport SEXP _Lorenz04_vectorRHS(SEXP XSEXP, SEXP KSEXP, SEXP FSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::vec& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const int& >::type K(KSEXP);
     Rcpp::traits::input_parameter< const double& >::type F(FSEXP);
-    rcpp_result_gen = Rcpp::wrap(RHS(X, K, F));
+    rcpp_result_gen = Rcpp::wrap(vectorRHS(X, K, F));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_VEnKF_DeltaLorenz04M2Cpp", (DL_FUNC) &_VEnKF_DeltaLorenz04M2Cpp, 6},
-    {"_VEnKF_Lorenz04M2SimCpp", (DL_FUNC) &_VEnKF_Lorenz04M2SimCpp, 8},
-    {"_VEnKF_exactGradient", (DL_FUNC) &_VEnKF_exactGradient, 5},
-    {"_VEnKF_exactGrad", (DL_FUNC) &_VEnKF_exactGrad, 2},
-    {"_VEnKF_RHS", (DL_FUNC) &_VEnKF_RHS, 3},
+    {"_Lorenz04_DeltaLorenz04M2Cpp", (DL_FUNC) &_Lorenz04_DeltaLorenz04M2Cpp, 6},
+    {"_Lorenz04_Lorenz04M2SimCpp", (DL_FUNC) &_Lorenz04_Lorenz04M2SimCpp, 8},
+    {"_Lorenz04_exactGradient", (DL_FUNC) &_Lorenz04_exactGradient, 5},
+    {"_Lorenz04_exactGrad", (DL_FUNC) &_Lorenz04_exactGrad, 2},
+    {"_Lorenz04_vectorRHS", (DL_FUNC) &_Lorenz04_vectorRHS, 3},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_VEnKF(DllInfo *dll) {
+RcppExport void R_init_Lorenz04(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

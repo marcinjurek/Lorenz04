@@ -4,7 +4,7 @@
 \alias{Lorenz04M2}
 \title{Single Lorenz simulation}
 \usage{
-Lorenz04M2(X0, F_Lor, K_Lor, dt = 0.005, M = 40, order = 1)
+Lorenz04M2(X0, F_Lor, K_Lor, dt = 0.005, M = 40)
 }
 \arguments{
 \item{X0}{The vector of points you want to pass through a Lorenz chaos model.}
@@ -16,9 +16,7 @@ value is the length of your data vector divided by 30.}
 
 \item{dt}{The internal step size. The default value is set to 0.005}
 
-\item{M}{The number of internal steps. The default value is set to 40}
-
-\item{order}{The order of the RK solution method to use.
+\item{M}{The number of internal steps. The default value is set to 40
 The default value is 1}
 }
 \value{

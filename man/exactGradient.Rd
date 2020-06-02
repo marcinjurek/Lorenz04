@@ -7,15 +7,15 @@
 exactGradient(X, K, M, dt, F)
 }
 \arguments{
+\item{X}{initial state}
+
+\item{K}{K from the Lorenz 04 model}
+
 \item{M}{the number of steps that make a time step}
 
 \item{dt}{time step}
 
-\item{Xinit}{initial state}
-
-\item{K_Lor}{K from the Lorenz 04 model}
-
-\item{F_Lor}{F from the Lorenz 04 model}
+\item{F}{F from the Lorenz 04 model}
 }
 \description{
 Gradient for the Lorenz model

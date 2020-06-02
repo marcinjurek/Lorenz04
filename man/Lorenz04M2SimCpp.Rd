@@ -4,7 +4,7 @@
 \alias{Lorenz04M2SimCpp}
 \title{Simulate from the Lorenz 04 model}
 \usage{
-Lorenz04M2SimCpp(Xinit, F_Lor, K_Lor, dt, M, iter, burn, newAlgo)
+Lorenz04M2SimCpp(Xinit, F_Lor, K_Lor, dt, M, iter, burn, vectorAlgo)
 }
 \arguments{
 \item{Xinit}{initial state}
@@ -20,6 +20,8 @@ Lorenz04M2SimCpp(Xinit, F_Lor, K_Lor, dt, M, iter, burn, newAlgo)
 \item{iter}{number of iterations}
 
 \item{burn}{how many steps to discard}
+
+\item{vectorAlgo}{whether to run the vector version of the algorithm}
 }
 \value{
 Xiter values of all iterations
