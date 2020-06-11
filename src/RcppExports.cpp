@@ -7,18 +7,18 @@
 using namespace Rcpp;
 
 // DeltaLorenz04M2Cpp
-arma::vec DeltaLorenz04M2Cpp(const arma::vec X0, const double& F, const int& K, const double& dt, const int& M, const bool& vectorAlgo);
-RcppExport SEXP _Lorenz04_DeltaLorenz04M2Cpp(SEXP X0SEXP, SEXP FSEXP, SEXP KSEXP, SEXP dtSEXP, SEXP MSEXP, SEXP vectorAlgoSEXP) {
+arma::vec DeltaLorenz04M2Cpp(const arma::vec& Z0, const double& F, const int& K, const double& dt, const int& M, const bool& vectorAlgo);
+RcppExport SEXP _Lorenz04_DeltaLorenz04M2Cpp(SEXP Z0SEXP, SEXP FSEXP, SEXP KSEXP, SEXP dtSEXP, SEXP MSEXP, SEXP vectorAlgoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec >::type X0(X0SEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type Z0(Z0SEXP);
     Rcpp::traits::input_parameter< const double& >::type F(FSEXP);
     Rcpp::traits::input_parameter< const int& >::type K(KSEXP);
     Rcpp::traits::input_parameter< const double& >::type dt(dtSEXP);
     Rcpp::traits::input_parameter< const int& >::type M(MSEXP);
     Rcpp::traits::input_parameter< const bool& >::type vectorAlgo(vectorAlgoSEXP);
-    rcpp_result_gen = Rcpp::wrap(DeltaLorenz04M2Cpp(X0, F, K, dt, M, vectorAlgo));
+    rcpp_result_gen = Rcpp::wrap(DeltaLorenz04M2Cpp(Z0, F, K, dt, M, vectorAlgo));
     return rcpp_result_gen;
 END_RCPP
 }

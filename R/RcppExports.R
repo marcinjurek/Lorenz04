@@ -3,7 +3,7 @@
 
 #' A single iteration of the Lorenz 04 model
 #'
-#' @param X0 initial state
+#' @param Z0 initial state
 #' @param F F from the Lorenz 04 model
 #' @param K K from the Lorenz 04 model
 #' @param dt time step
@@ -11,8 +11,8 @@
 #' @param vectorAlgo whether to run the vector version of the algorithm
 #' @return dx the increment to reach the new state
 #' @export
-DeltaLorenz04M2Cpp <- function(X0, F, K, dt, M, vectorAlgo) {
-    .Call('_Lorenz04_DeltaLorenz04M2Cpp', PACKAGE = 'Lorenz04', X0, F, K, dt, M, vectorAlgo)
+DeltaLorenz04M2Cpp <- function(Z0, F, K, dt, M, vectorAlgo) {
+    .Call('_Lorenz04_DeltaLorenz04M2Cpp', PACKAGE = 'Lorenz04', Z0, F, K, dt, M, vectorAlgo)
 }
 
 #' Simulate from the Lorenz 04 model

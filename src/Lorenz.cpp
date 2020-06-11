@@ -11,7 +11,7 @@ using namespace Rcpp;
 
 //' A single iteration of the Lorenz 04 model
 //'
-//' @param X0 initial state
+//' @param Z0 initial state
 //' @param F F from the Lorenz 04 model
 //' @param K K from the Lorenz 04 model
 //' @param dt time step
@@ -20,46 +20,48 @@ using namespace Rcpp;
 //' @return dx the increment to reach the new state
 //' @export
 // [[Rcpp::export]]
-arma::vec DeltaLorenz04M2Cpp(const arma::vec X0, const double & F, const int& K,
+arma::vec DeltaLorenz04M2Cpp(const arma::vec& Z0, const double & F, const int& K,
                              const double& dt, const int& M, const bool& vectorAlgo){
-  
-  // Initialize vector of zeros that will "update" XX
-  arma::vec X = X0;
-  int N_Lor = X.n_rows;
 
-  arma::vec dx;
+
+  int I = 12;
+  double b = 10;
+  double c = 2.5;
+  //double c = 0.6;
+  double alpha = (3*I*I + 3.0)/(2*I*I*I + 4*I);
+  double beta = (2*I*I + 1.0)/(I*I*I*I + 2*I*I);
+
   
-  // Nested for loops to update XX
+  // CapInitialize vector of zeros that will "update" XX
+  arma::vec Z = Z0;
+
+  arma::vec k1, k2, k3, k4;
+
+
   for(int i = 0; i < M ; ++i){
 
     if(vectorAlgo){
       
-      arma::vec k1 = vectorRHS(X, K, F);
-      arma::vec k2 = vectorRHS(X + 0.5*dt*k1, K, F);
-      arma::vec k3 = vectorRHS(X + 0.5*dt*k2, K, F);
-      arma::vec k4 = vectorRHS(X + dt*k3, K, F);
-      
-      dx = (k1 + 2*k2 + 2*k3 + k4) * dt/6;
+      k1 = vectorRHS(Z, K, F);
+      k2 = vectorRHS(Z + 0.5*dt*k1, K, F);
+      k3 = vectorRHS(Z + 0.5*dt*k2, K, F);
+      k4 = vectorRHS(Z + dt*k3, K, F);
       
     } else {
 
-      dx = arma::zeros<arma::vec>(N_Lor);
-      for(int j = 0; j < N_Lor; ++j){
+      k1 = scalarRHS(Z, K, F, I, b, c, alpha, beta);
+      k2 = scalarRHS(Z + 0.5*dt*k1, K, F, I, b, c, alpha, beta);
+      k3 = scalarRHS(Z + 0.5*dt*k2, K, F, I, b, c, alpha, beta);
+      k4 = scalarRHS(Z + dt*k3, K, F, I, b, c, alpha, beta);
       
-	      double k1 = scalarRHS(X, j, K, F);
-	      double k2 = scalarRHS(X + 0.5*dt*k1, j, K, F);
-	      double k3 = scalarRHS(X + 0.5*dt*k2, j, K, F);
-	      double k4 = scalarRHS(X + dt*k3, j, K, F);
-	      dx(j) =  (k1 + 2*k2 + 2*k3 + k4) * dt/6;
-  
-      }
-    } 
-    
-    X += dx;
+    }
+
+    arma::vec dz = (k1 + 2*k2 + 2*k3 + k4) * dt/6;
+    Z += dz;
       
   }
   
-  return X - X0;
+  return Z - Z0;
 }
 
 
@@ -78,8 +80,7 @@ arma::vec DeltaLorenz04M2Cpp(const arma::vec X0, const double & F, const int& K,
 // [[Rcpp::export]]
 arma::mat Lorenz04M2SimCpp(const arma::vec& Xinit, const int& F_Lor, const int& K_Lor,
                            const double& dt, const int& M, const int& iter, const int& burn,
-			   const bool& vectorAlgo)
-{
+			   const bool& vectorAlgo){
   // Get N_Lor from Xinit
   int N_Lor = Xinit.n_rows;
   // Create Matrix to store generated data

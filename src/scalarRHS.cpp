@@ -4,87 +4,148 @@
 using namespace Rcpp;
 
 
-double Wn_Even_Cpp(const arma::colvec& XX, const int& n, const int& K, const int& N){
-  
-  double J = K / 2;
 
-  double first = XX(mod(n - J, N)) / (2 * K);
-  double last = XX(mod(n + J, N)) / (2 * K);
-  double sums = first + last - XX(mod(n, N)) / K;
+
+double Wn(const arma::colvec& X, const int& n, const int& K){
+
+  int N = X.n_rows;
+  int J = K / 2;
+
+  double first = X(mod(n - J, N)) / K;
+  double last = X(mod(n + J, N)) / K;
+  if( K % 2 == 0){
+    first /= 2;
+    last  /= 2;
+  }
+  
+  double sums = first + last - X(mod(n, N)) / K;
   
   for(int i = 0; i < J; ++i)  {
-    sums = sums + XX(mod(n - i, N)) / K + XX(mod(n + i, N)) / K;
+    sums = sums + X(mod(n - i, N)) / K + X(mod(n + i, N)) / K;
   }
 
   return(sums);
+  
 }
 
 
-double Wn_Odd_Cpp(const arma::colvec& XX, const int& n, const int& k, const int& N){
-  double K = k;
-  double J = (K - 1) /2;
 
-  double sums = - XX(mod(n, N)) / K;
+
+double XX(const arma::colvec& X, const int& n, const int& K){
   
-  for(int i = 0; i <= J; ++i)  {
-    sums = sums + XX(mod(n - i, N)) / K + XX(mod(n + i, N)) / K;
+  int N = X.n_rows;
+  int J = K / 2;
+  
+  double first = (Wn(X, mod(n - K - J, N), K) * X(mod(n + K - J, N))) / K;
+  double last  = (Wn(X, mod(n - K + J, N), K) * X(mod(n + K + J, N))) / K;
+
+  if( K % 2 == 0){
+    first /= 2;
+    last /= 2;
   }
 
-  return(sums);
-}
+  double r_sum = first + last + (Wn(X, mod(n - K, N), K) * X(mod(n + K, N)) / K);
 
-
-double XX_Kn_Even_Cpp(const arma::colvec& XX, const int& n, const int& k){
-  
-  int N = XX.n_rows;
-  double K = k;
-  double J = K / 2;
-  
-  double first = (Wn_Even_Cpp(XX, mod(n - K - J, N), K, N) * XX(mod(n + K - J, N))) / (2 * K);
-  double last = (Wn_Even_Cpp(XX, mod(n - K + J, N), K, N) * XX(mod(n + K + J, N))) / (2 * K);
-  
-  double r_sum = first + last + (Wn_Even_Cpp(XX, mod(n - K, N), K, N) * XX(mod(n + K, N)) / K);
-  
   for(int i = 1; i < J; ++i){
-    r_sum = r_sum + Wn_Even_Cpp(XX, mod(n - K - i, N), K, N) * XX(mod(n + K - i, N)) / K + Wn_Even_Cpp(XX, mod(n - K + i, N), K, N) * XX(mod(n + K + i, N)) / K;
+    double jcontrib = Wn(X, mod(n - K + i, N), K) * X(mod(n + K + i, N)) / K;
+    double negjcontrib = Wn(X, mod(n - K - i, N), K) * X(mod(n + K - i, N)) / K;
+    r_sum = r_sum + jcontrib + negjcontrib;
   }
   
-  double XX_Kn_val = (-Wn_Even_Cpp(XX, mod(n - (2 * K), N), K, N)) * Wn_Even_Cpp(XX, mod(n - K, N), K, N) + r_sum;
-  //std::cout << (-Wn_Even_Cpp(XX, mod(n - (2 * K), N), K, N)) * Wn_Even_Cpp(XX, mod(n - K, N), K, N) << std::endl;
-  return XX_Kn_val;
+  double XX_val = (-Wn(X, mod(n - (2 * K), N), K)) * Wn(X, mod(n - K, N), K) + r_sum;
+
+  if(XX_val==arma::datum::nan){
+    Rcout << "ERROR!" << std::endl;
+  }
+  
+  return XX_val;
 }
 
 
-double XX_Kn_Odd_Cpp(const arma::colvec& XX, const int& n, const int& K){
-  
-  int N = XX.n_rows;
-  //double K = k;
-  double J = (K - 1) / 2;
-  
-  double r_sum = (Wn_Odd_Cpp(XX, mod(n - K, N), K, N) * XX(mod(n + K, N)) / K);
-  
-  for(int i = 1; i <= J; ++i){
-    r_sum = r_sum + Wn_Odd_Cpp(XX, mod(n - K - i, N), K, N) * XX(mod(n + K - i, N)) / K + Wn_Odd_Cpp(XX, mod(n - K + i, N), K, N) * XX(mod(n + K + i, N)) / K;
-    //std::cout << "iteration " << i << ": " << r_sum << std::endl;
+
+
+
+arma::vec getXFromZ(const arma::vec& Z, const double& alpha, const double& beta, const int& I){
+
+  int N = Z.n_rows;
+  arma::vec X = arma::zeros<arma::vec>(N);
+  for(int j = 0; j < N; ++j){
+
+    double first  = Z(mod(j + I, N)) * (alpha - beta*I)/2;
+    double last   = Z(mod(j - I, N)) * (alpha - beta*I)/2;
+    double middle = Z(j) * alpha;
+
+    double Xj = first + last + middle;
+
+    for(int i = 1; i < I; ++i){
+      Xj += (Z(mod(j + i, N)) + Z(mod(j - i, N))) * (alpha - beta*i);
+    }
+    X(j) = Xj;
   }
-  
-  double XX_Kn_val = (-Wn_Odd_Cpp(XX, mod(n - (2 * K), N), K, N)) * Wn_Odd_Cpp(XX, mod(n - K, N), K, N) + r_sum;
-  
-  return XX_Kn_val;
-  
+
+  return X;
 }
 
 
-double scalarRHS(const arma::vec& X, const int& j, const int& K, const double& F){
+
+
+
+double bracket(const arma::colvec& X, const arma::colvec& Y, const int& K, const int& n){
+
+  int N = X.n_rows;
   
-  double Xj;
-  double XX;
-  if(K % 2 == 0){
-    XX = XX_Kn_Even_Cpp(X, j, K);
-    Xj = XX - X(j) + F;
+  //if X==Y use a faster algorithm from eq. 10  
+  if( K==1 ){
+    if(n==0){
+      //Rcout << "here" << std::endl;
+    }
+    return -X(mod(n - 2, N)) * Y(mod(n - 1, N)) + X(mod(n - 1, N)) * Y(mod(n + 1, N));
+  } else if(sum(abs(X - Y)) < 1e-10){
+    if(n==0){
+      //Rcout << "not here" << std::endl;
+    }
+    return XX(X, n, K);
   } else {
-    Xj = XX_Kn_Odd_Cpp(X, j, K) - X(j) + F;
-  } 
+    stop("Inadmissible value of K");
+    return -1;
+  }   
   
-  return(Xj);
+}
+
+
+
+
+arma::vec scalarRHS(const arma::vec& Z, const int& K, const double& F, const int& I,
+		    const double& b, const double& c, const double& alpha, const double& beta){
+
+  int N = Z.n_rows;
+  
+  if( Z.has_nan()){
+    stop("nan's detected in Z");
+  }
+  
+  arma::vec X = getXFromZ(Z, alpha, beta, I);
+  arma::vec Y = Z - X;
+
+  if(X.has_nan() | Y.has_nan()){
+    stop("nan's detected in X or Y");
+  }
+
+  arma::vec k = arma::zeros<arma::vec>(N);
+  
+  for(int j = 0; j < N; ++j){
+    double bXX = bracket(X, X, K, j);
+    double bYY = bracket(Y, Y, 1, j);
+    double bYX = bracket(Y, X, 1, j);
+   
+    k(j) = bXX + b*b*bYY + c*bYX - X(j) - b*Y(j) + F;
+    
+  }
+  
+  if(k.has_nan()){
+    stop("nan's detected in k");
+  }
+  
+  return k;
+
 }

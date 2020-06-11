@@ -56,11 +56,9 @@ X0 = getX0(N, Force, K, dt)
 
 
 params = list(
-    list(dt = 0.001, M = 5*40, Tmax = Tmax),
-    list(dt = 0.005, M = 40, Tmax = Tmax),
-    list(dt = 0.025, M = 8, Tmax = Tmax)
+    list(dt = 0.005, M = 1, Tmax = Tmax)
 )
 
 
-X = generateXs(X0, params)
-plotComparison(Xs, params, save=FALSE)
+X = generateXs(X0, params, "new")
+plotComparison(X, params, save=FALSE)

@@ -6,5 +6,4 @@
 #' @name Lorenz04
 #' @useDynLib Lorenz04
 #' @importFrom Rcpp sourceCpp
-#' 
 NULL

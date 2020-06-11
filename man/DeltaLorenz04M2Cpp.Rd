@@ -4,10 +4,10 @@
 \alias{DeltaLorenz04M2Cpp}
 \title{A single iteration of the Lorenz 04 model}
 \usage{
-DeltaLorenz04M2Cpp(X0, F, K, dt, M, vectorAlgo)
+DeltaLorenz04M2Cpp(Z0, F, K, dt, M, vectorAlgo)
 }
 \arguments{
-\item{X0}{initial state}
+\item{Z0}{initial state}
 
 \item{F}{F from the Lorenz 04 model}
 
